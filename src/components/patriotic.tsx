@@ -1,3 +1,5 @@
+import type { CSSProperties } from "react";
+
 import { cn } from "@/lib/utils";
 import { STATE_SHAPES } from "@/lib/state-shapes";
 
@@ -27,6 +29,27 @@ const FLAG_STARS: [number, number][] = (() => {
 })();
 
 /**
+ * The flag is cut into vertical strips that bob out of phase, so a wave travels
+ * from the pole to the fly end. Amplitude grows away from the pole (where the
+ * cloth is fixed) and each strip darkens as it dips, giving the folds depth.
+ */
+const RIPPLE_COUNT = 28;
+const RIPPLE_PERIOD = 1.8;
+const RIPPLE_STRIPS = Array.from({ length: RIPPLE_COUNT }, (_, i) => {
+  const w = 190 / RIPPLE_COUNT;
+  const x = i * w;
+  const t = i / (RIPPLE_COUNT - 1);
+  return {
+    x,
+    w,
+    amp: +(0.4 + 4.2 * t).toFixed(2),
+    // Negative delays start every strip mid-cycle, phase-shifted by position.
+    delay: +(-(1 - t) * RIPPLE_PERIOD * 1.5).toFixed(3),
+    stars: FLAG_STARS.filter(([sx]) => sx + 2.2 > x && sx - 2.2 < x + w),
+  };
+});
+
+/**
  * US flag on a pole. `side="left"` puts the pole on the left (flag flies right);
  * `side="right"` mirrors it so a pair of flags frames content symmetrically,
  * with the canton next to the pole on both sides.
@@ -44,15 +67,33 @@ export function Flag({ className, side = "left" }: { className?: string; side?: 
         <rect x={2} y={4} width={5} height={146} rx={2} fill="#C9A227" />
         <circle cx={4.5} cy={4} r={4.5} fill="#E3C35A" />
         <g transform="translate(9 8)">
-          <g className="flag-wave">
-            {Array.from({ length: 13 }).map((_, i) => (
-              <rect key={i} x={0} y={i * STRIPE_H} width={190} height={STRIPE_H + 0.2} fill={i % 2 === 0 ? "#B22234" : "#FFFFFF"} />
-            ))}
-            <rect x={0} y={0} width={CANTON_W} height={CANTON_H} fill="#3C3B6E" />
-            {FLAG_STARS.map(([x, y], i) => (
-              <polygon key={i} points={starPoints(x, y, 2.1)} fill="#FFFFFF" />
-            ))}
-          </g>
+          {RIPPLE_STRIPS.map(({ x, w, amp, delay, stars }) => (
+            <g
+              key={x}
+              className="flag-ripple"
+              style={{ "--amp": `${amp}px`, animationDelay: `${delay}s` } as CSSProperties}
+            >
+              {/* A nested svg clips its contents to this vertical strip of the flag. */}
+              <svg x={x} y={0} width={w + 0.4} height={100} viewBox={`${x} 0 ${w + 0.4} 100`} overflow="hidden">
+                {Array.from({ length: 13 }).map((_, i) => (
+                  <rect key={i} x={x} y={i * STRIPE_H} width={w + 0.4} height={STRIPE_H + 0.2} fill={i % 2 === 0 ? "#B22234" : "#FFFFFF"} />
+                ))}
+                {x < CANTON_W && <rect x={x} y={0} width={Math.min(w + 0.4, CANTON_W - x)} height={CANTON_H} fill="#3C3B6E" />}
+                {stars.map(([sx, sy], i) => (
+                  <polygon key={i} points={starPoints(sx, sy, 2.1)} fill="#FFFFFF" />
+                ))}
+                <rect
+                  x={x}
+                  y={0}
+                  width={w + 0.4}
+                  height={100}
+                  fill="#000"
+                  className="flag-shade"
+                  style={{ animationDelay: `${delay}s` }}
+                />
+              </svg>
+            </g>
+          ))}
         </g>
       </g>
     </svg>
