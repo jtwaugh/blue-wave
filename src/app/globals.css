@@ -1,26 +1,137 @@
 @import "tailwindcss";
+@import "tw-animate-css";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --radius: 0.75rem;
+  --background: oklch(0.22 0.07 265);
+  --foreground: oklch(0.98 0 0);
+  --card: oklch(0.99 0.004 90);
+  --card-foreground: oklch(0.22 0.07 265);
+  --popover: oklch(0.99 0.004 90);
+  --popover-foreground: oklch(0.22 0.07 265);
+  --primary: oklch(0.52 0.21 25);
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.3 0.09 265);
+  --secondary-foreground: oklch(0.98 0 0);
+  --muted: oklch(0.94 0.01 265);
+  --muted-foreground: oklch(0.45 0.04 265);
+  --accent: oklch(0.94 0.01 265);
+  --accent-foreground: oklch(0.22 0.07 265);
+  --destructive: oklch(0.58 0.22 27);
+  --border: oklch(0.88 0.02 265);
+  --input: oklch(0.88 0.02 265);
+  --ring: oklch(0.52 0.21 25);
+  --gold: oklch(0.82 0.15 85);
+  --navy: oklch(0.22 0.07 265);
+  --flag-red: oklch(0.52 0.21 25);
+  --called: oklch(0.6 0.15 150);
+  --called-bg: oklch(0.93 0.07 150);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-gold: var(--gold);
+  --color-navy: var(--navy);
+  --color-flag-red: var(--flag-red);
+  --color-called: var(--called);
+  --color-called-bg: var(--called-bg);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --font-display: "Alfa Slab One", Georgia, serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    background-image:
+      radial-gradient(circle at 20% 10%, oklch(0.35 0.1 265 / 0.6), transparent 40%),
+      radial-gradient(circle at 80% 90%, oklch(0.35 0.12 25 / 0.35), transparent 45%);
+    background-attachment: fixed;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.font-display {
+  font-family: var(--font-display);
+  letter-spacing: 0.01em;
+}
+
+.starfield {
+  background-image: radial-gradient(white 1px, transparent 1.5px);
+  background-size: 34px 34px;
+  opacity: 0.12;
+}
+
+.stripes {
+  background: repeating-linear-gradient(
+    180deg,
+    var(--flag-red) 0 8px,
+    white 8px 16px
+  );
+}
+
+@keyframes wave {
+  0%, 100% { transform: skewY(0deg) scaleY(1); }
+  25% { transform: skewY(-2deg) scaleY(0.98); }
+  75% { transform: skewY(2deg) scaleY(1.02); }
+}
+.flag-wave {
+  animation: wave 2.6s ease-in-out infinite;
+  transform-origin: left center;
+}
+
+@keyframes soar {
+  0% { transform: translateX(-30vw) translateY(10vh) rotate(-6deg); opacity: 0; }
+  10% { opacity: 1; }
+  50% { transform: translateX(50vw) translateY(-6vh) rotate(4deg); }
+  90% { opacity: 1; }
+  100% { transform: translateX(130vw) translateY(4vh) rotate(-4deg); opacity: 0; }
+}
+.eagle-soar {
+  animation: soar 3.6s ease-in-out forwards;
+}
+
+@keyframes flap {
+  0%, 100% { transform: scaleY(1); }
+  50% { transform: scaleY(0.75); }
+}
+.wing {
+  animation: flap 0.5s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center bottom;
+}
+
+@keyframes pop {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.07); }
+  100% { transform: scale(1); }
+}
+.pop {
+  animation: pop 0.45s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flag-wave, .eagle-soar, .wing, .pop { animation: none; }
 }
