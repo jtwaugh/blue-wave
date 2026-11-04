@@ -1,5 +1,5 @@
 import { BingoBoard } from "@/components/bingo-board";
-import { Eagle, Flag, StarRow } from "@/components/patriotic";
+import { EagleSeal, Flag, StarRow } from "@/components/patriotic";
 
 export default function Home() {
   return (
@@ -8,10 +8,10 @@ export default function Home() {
 
       <div className="relative mx-auto max-w-3xl px-4 pt-8 pb-16 sm:pt-12">
         <header className="mb-8 text-center">
-          <div className="mb-3 flex items-end justify-center gap-3 sm:gap-6">
-            <Flag className="hidden w-20 sm:block" />
-            <Eagle className="w-36 sm:w-48" />
-            <Flag className="hidden w-20 -scale-x-100 sm:block" />
+          <div className="mb-5 grid grid-cols-[1fr_auto_1fr] items-center gap-3 sm:gap-6">
+            <Flag side="left" className="w-full max-w-36 justify-self-end" />
+            <EagleSeal className="w-28 sm:w-36" />
+            <Flag side="right" className="w-full max-w-36 justify-self-start" />
           </div>
           <StarRow className="mb-3" />
           <h1 className="font-display text-4xl leading-tight text-white drop-shadow-[0_3px_0_var(--flag-red)] sm:text-6xl">
@@ -19,7 +19,7 @@ export default function Home() {
           </h1>
           <p className="mt-2 text-sm tracking-[0.3em] text-gold uppercase sm:text-base">Election night 2026</p>
           <p className="mx-auto mt-4 max-w-xl text-sm text-white/75">
-            Nine of the closest Senate races. A square counts the moment CNN or Fox projects a winner. First to
+            Nine of the twelve closest Senate races. A square counts the moment CNN or Fox projects a winner. First to
             three in a row wins. Everyone gets their own random card, with the safest early call locked in the center.
           </p>
         </header>

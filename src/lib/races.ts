@@ -1,4 +1,4 @@
-export type RaceKey = "GA" | "OH" | "IA" | "NH" | "NC" | "NE" | "TX" | "MI" | "ME" | "AK";
+export type RaceKey = "GA" | "OH" | "IA" | "NH" | "NC" | "NE" | "TX" | "MI" | "ME" | "AK" | "SC" | "FL";
 
 export type Race = {
   name: string;
@@ -11,19 +11,21 @@ export type Race = {
 
 export const RACES: Record<RaceKey, Race> = {
   GA: { name: "Georgia", abbr: "GA", close: "7:00 PM", rating: "Lean D", note: "Runoff if under 50%" },
-  OH: { name: "Ohio", abbr: "OH", close: "7:30 PM", rating: "Toss-up", note: "Fast count" },
-  IA: { name: "Iowa", abbr: "IA", close: "9:00 PM", rating: "Toss-up", note: "Fast count" },
+  OH: { name: "Ohio", abbr: "OH", close: "7:30 PM", rating: "Toss\u2011up", note: "Fast count" },
+  IA: { name: "Iowa", abbr: "IA", close: "9:00 PM", rating: "Toss\u2011up", note: "Fast count" },
   NH: { name: "New Hampshire", abbr: "NH", close: "8:00 PM", rating: "Lean D", note: "Small, quick state" },
   NC: { name: "North Carolina", abbr: "NC", close: "7:30 PM", rating: "Lean D", note: "Safest early call" },
   NE: { name: "Nebraska", abbr: "NE", close: "9:00 PM", rating: "Likely R", note: "Independent challenger" },
-  TX: { name: "Texas", abbr: "TX", close: "9:00 PM", rating: "Toss-up", note: "El Paso closes last" },
-  MI: { name: "Michigan", abbr: "MI", close: "9:00 PM", rating: "Toss-up", note: "Western UP closes last" },
-  ME: { name: "Maine", abbr: "ME", close: "8:00 PM", rating: "Toss-up", note: "Ranked-choice risk" },
-  AK: { name: "Alaska", abbr: "AK", close: "1:00 AM", rating: "Toss-up", note: "RCV, can take weeks" },
+  TX: { name: "Texas", abbr: "TX", close: "9:00 PM", rating: "Toss\u2011up", note: "El Paso closes last" },
+  MI: { name: "Michigan", abbr: "MI", close: "9:00 PM", rating: "Toss\u2011up", note: "Western UP closes last" },
+  ME: { name: "Maine", abbr: "ME", close: "8:00 PM", rating: "Toss\u2011up", note: "Ranked-choice risk" },
+  AK: { name: "Alaska", abbr: "AK", close: "1:00 AM", rating: "Toss\u2011up", note: "RCV, can take weeks" },
+  SC: { name: "South Carolina", abbr: "SC", close: "7:00 PM", rating: "Toss\u2011up", note: "Graham's seat, early close" },
+  FL: { name: "Florida", abbr: "FL", close: "8:00 PM", rating: "Battleground", note: "Special; Trump +13 in 2024" },
 };
 
 export const START_GRID: RaceKey[] = ["GA", "OH", "IA", "NH", "NC", "NE", "TX", "MI", "ME"];
-export const START_BENCH: RaceKey[] = ["AK"];
+export const START_BENCH: RaceKey[] = ["AK", "SC", "FL"];
 
 /** The most secure early call always sits in the center square. */
 export const CENTER: RaceKey = "NC";

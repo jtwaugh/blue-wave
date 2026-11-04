@@ -99,6 +99,7 @@
 }
 .flag-wave {
   animation: wave 2.6s ease-in-out infinite;
+  transform-box: fill-box;
   transform-origin: left center;
 }
 
@@ -123,6 +124,16 @@
   transform-origin: center bottom;
 }
 
+@keyframes glide {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(9deg); }
+}
+.wing-h {
+  animation: glide 0.9s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: right center;
+}
+
 @keyframes pop {
   0% { transform: scale(1); }
   40% { transform: scale(1.07); }
@@ -133,5 +144,5 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .flag-wave, .eagle-soar, .wing, .pop { animation: none; }
+  .flag-wave, .eagle-soar, .wing, .wing-h, .pop { animation: none; }
 }

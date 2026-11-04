@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { Eagle, Flag, StarRow } from "@/components/patriotic";
+import { Flag, SoaringEagle, StarRow, StateFlag, StateShape } from "@/components/patriotic";
 import { CENTER, LINES, RACES, START_BENCH, START_GRID, dealCard, randomPlayerName, type RaceKey } from "@/lib/races";
 import { cn } from "@/lib/utils";
 
@@ -190,7 +190,7 @@ export function BingoBoard() {
         onClick={() => handleTile(key, where, index)}
         aria-pressed={where === "grid" ? Boolean(call) : undefined}
         className={cn(
-          "group relative flex min-h-32 flex-col justify-between overflow-hidden rounded-xl border-2 p-3 text-left transition-all sm:min-h-36 sm:p-4",
+          "group relative flex min-h-32 min-w-0 flex-col justify-between overflow-hidden rounded-xl border-2 p-2.5 text-left transition-all sm:min-h-36 sm:p-4",
           "focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-gold/60",
           call
             ? "border-called bg-called-bg text-[oklch(0.32_0.09_150)]"
@@ -199,20 +199,18 @@ export function BingoBoard() {
           inWin && "ring-4 ring-gold shadow-[0_0_24px_oklch(0.82_0.15_85/0.6)]",
           selected && "ring-4 ring-flag-red",
           popKey === key && "pop",
-          where === "bench" && "min-h-24 sm:min-h-28 opacity-90"
+          where === "bench" && "opacity-90"
         )}
       >
-        <span
-          aria-hidden="true"
-          className={cn(
-            "font-display pointer-events-none absolute -right-1 -bottom-3 text-6xl leading-none sm:text-7xl",
-            call ? "text-called/20" : "text-navy/[0.07]"
-          )}
-        >
-          {race.abbr}
-        </span>
         <div className="relative">
-          <div className="flex items-start justify-between gap-1">
+          <div className="flex items-start justify-between gap-2">
+            <StateFlag abbr={race.abbr} name={race.name} className="w-8 sm:w-9" />
+            <StateShape
+              abbr={race.abbr}
+              className={cn("size-8 shrink-0 sm:size-9", call ? "text-called" : "text-navy/70")}
+            />
+          </div>
+          <div className="mt-2 flex flex-wrap items-center gap-x-1.5 gap-y-1">
             <span className="text-[15px] leading-tight font-bold sm:text-base">{race.name}</span>
             {isCenter && (
               <span className="rounded-full bg-flag-red px-1.5 py-0.5 text-[10px] font-bold tracking-wide text-white uppercase">
@@ -226,15 +224,15 @@ export function BingoBoard() {
         </div>
         <div className="relative mt-3 flex flex-col gap-1">
           {call ? (
-            <Badge className="bg-called text-white">
-              <Check /> Called {call.time} · {call.network}
+            <Badge className="max-w-full bg-called whitespace-normal text-white">
+              <Check /> <span>Called {call.time}<span className="hidden sm:inline"> · {call.network}</span></span>
             </Badge>
           ) : (
-            <Badge variant="outline" className="bg-muted/60 text-muted-foreground">
-              <Clock /> Not called
+            <Badge variant="outline" className="max-w-full bg-muted/60 text-muted-foreground">
+              <Clock /> <span className="sm:hidden">Open</span><span className="hidden sm:inline">Not called</span>
             </Badge>
           )}
-          <span className={cn("text-[11px]", call ? "opacity-75" : "text-muted-foreground")}>{race.note}</span>
+          <span className={cn("hidden text-[11px] sm:block", call ? "opacity-75" : "text-muted-foreground")}>{race.note}</span>
         </div>
       </button>
     );
@@ -244,7 +242,7 @@ export function BingoBoard() {
     <div className="relative">
       {eagles.map((id) => (
         <div key={id} className="pointer-events-none fixed top-[18vh] left-0 z-50 eagle-soar">
-          <Eagle flapping className="w-40 sm:w-56" />
+          <SoaringEagle className="w-48 sm:w-72" />
         </div>
       ))}
 
@@ -347,9 +345,9 @@ export function BingoBoard() {
       </Card>
 
       <div className="mt-6 flex items-center justify-center gap-4">
-        <Flag className="w-16" />
+        <Flag side="left" className="w-14" />
         <StarRow />
-        <Flag className="w-16 -scale-x-100" />
+        <Flag side="right" className="w-14" />
       </div>
     </div>
   );
